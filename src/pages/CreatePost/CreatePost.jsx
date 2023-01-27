@@ -38,8 +38,6 @@ const CreatePost = () => {
       setFormError("Por favor, preencha todos os campos!");
     }
 
-    console.log(tagsArray);
-
     if(formError) return
 
     insertDocument({

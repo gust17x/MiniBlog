@@ -25,6 +25,7 @@ import { motion } from 'framer-motion'
 import Dashboard from './pages/Dashboard/Dashboard'
 import CreatePost from './pages/CreatePost/CreatePost'
 import Loading from './pages/Loading/Loading'
+import Search from './pages/Search/Search'
 
 function App() {
 
@@ -57,6 +58,8 @@ function App() {
           <Route path='/' element={<Home/>}/>
 
           <Route path='/about' element={<About/>}/>
+
+          <Route path='/search' element={<Search/>}/>
 
           <Route path='/login' element={!user ? <Login/> : <Navigate to='/'/>}/>
 
