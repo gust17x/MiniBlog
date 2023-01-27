@@ -3,7 +3,15 @@ import './Navbar.sass'
 import { NavLink } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
+import { useAuthentication } from '../Hooks/useAuthentication'
+
+import { useAuthValue } from '../context/AuthContext'
+
 const navbar = () => {
+
+  const { user } = useAuthValue()
+  const { logout } = useAuthentication()
+
   return (
     <motion.nav className='navbar' initial={{opacity: 0}} animate={{opacity: 1}}>
         <NavLink to='/' className='brand'>
@@ -14,17 +22,39 @@ const navbar = () => {
                 <NavLink to='/' >Home</NavLink>
             </motion.li>
 
-            <motion.li >
+          {!user && (
+            <>
+            <li >
                <NavLink to='/login'>Entrar</NavLink> 
-            </motion.li>
+            </li>
 
-            <motion.li >
+            <li >
                <NavLink to='/register'>Cadastrar</NavLink> 
-            </motion.li>
+            </li>
+            </>
+          )}
 
-            <motion.li >
+
+          {user && (
+            <>
+            <li >
+               <NavLink to='/dashboard'>Dashboard</NavLink> 
+            </li>
+
+            <li >
+               <NavLink to='/createpost'>Novo post</NavLink> 
+            </li>
+            </>
+          )}
+
+            <li >
                <NavLink to='/about'>Sobre</NavLink> 
-            </motion.li>
+            </li>
+            {user && (
+              <li>
+                <button onClick={logout}>Sair</button>
+              </li>
+            )}
         </ul>
         
         

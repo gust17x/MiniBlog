@@ -2,6 +2,7 @@ import './Register.sass'
 
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { useAuthentication } from '../../Hooks/useAuthentication'
 
 const Register = () => {
 
@@ -11,7 +12,9 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState("")
 
-  const handleSubmit = (e) => {
+  const { createUser, error: authError, loading } = useAuthentication()
+
+  const handleSubmit = async(e) => {
     e.preventDefault()
 
     setError("")
@@ -27,12 +30,27 @@ const Register = () => {
       return
     }
 
+    const res = await createUser(user)
+
     console.log(user)
+
+    setDysplayName("")
+    setEmail("")
+    setPaswword("")
+    setConfirmPassword("")
 
   } 
 
+  useEffect(() => {
+
+    if(authError) {
+      setError(authError)
+    }
+
+  }, [authError])
+
   return (
-    <div className='register'>
+    <motion.div className='register' initial={{opacity: 0}} animate={{opacity: 1}}>
         <h1>Cadastre-se para postar</h1>
         <p>Crie seu usuario e compartilhe suas historias</p>
 
@@ -75,11 +93,12 @@ const Register = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}/>
           </label>
 
-          <button submit='btn' className='btn'>Cadastrar</button>
+          {!loading && <button submit='btn' className='btn'>Cadastrar</button>}
+          {loading && <button submit='btn' className='btn' disabled>Aguardar...</button>}
           {error && <motion.p className='error' initial={{opacity: 0, scale: .1}}  animate={{opacity: 1, scale: 1}}>{error}</motion.p> }
         </form>
 
-    </div>
+    </motion.div>
   )
 }
 
