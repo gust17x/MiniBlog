@@ -5,6 +5,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { useFetchDocuments } from '../../Hooks/UsefetchDocuments'
+import { useAuthentication } from '../../Hooks/useAuthentication'
 // components
 import PostDetail from '../../components/PostDetail'
 
@@ -12,6 +13,8 @@ const Home = () => {
 
   const [query, setQuery] = useState("")
   const { documents: posts, loading } = useFetchDocuments("posts")
+
+  const { createUser } = useAuthentication()
 
   const Navigate = useNavigate()
 

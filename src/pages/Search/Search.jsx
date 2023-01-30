@@ -13,9 +13,11 @@ const Search = () => {
 
   const { documents: posts } = useFetchDocuments("posts", search);
 
+    console.log(posts)
+
     return (
     <div className='search-container'>
-        <h1>Resultados</h1>
+        
         <div> 
             {posts && posts.length === 0 && (
                 <>
