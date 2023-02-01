@@ -1,12 +1,17 @@
-import './CreatePost.sass'
+import './EditPost.sass'
 
 import { motion } from 'framer-motion'
 import { useAuthValue } from "../../context/AuthContext"
-import { useState } from 'react'
-import { useInsertDocument } from '../../Hooks/useInsertsDocument'
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useFetchDocument } from '../../Hooks/useFetchDocument'
+import { useUpdateDocument } from '../../Hooks/useUpdateDocument'
 
-const CreatePost = () => {
+
+const EditPost = () => {
+
+  const { id } = useParams()
+  const { document: post } = useFetchDocument("posts", id)
 
   const [title, setTitle] = useState("")
   const [image, setImage] = useState("")
@@ -14,10 +19,25 @@ const CreatePost = () => {
   const [tags, setTags] = useState([])
   const [formError, setFormError] = useState("")
 
+    useEffect(() => {
+
+        if(post) {
+            setTitle(post.title)
+            setBody(post.body)
+            setImage(post.image)
+
+            const textTags = post.tags.join(", ")
+
+            setTags(textTags)
+
+        }
+
+    }, [post])
+
   const { user } = useAuthValue()
   const navigate = useNavigate()
 
-  const { insertDocument, response } = useInsertDocument("posts")
+  const { updateDocument, response } = useUpdateDocument("posts")
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,24 +60,30 @@ const CreatePost = () => {
 
     if(formError) return
 
-    insertDocument({
+    const data = {
       title,
       image,
       body,
       tags: tagsArray,
       uid: user.uid,
       createdBy: user.displayName,
-    });
+    }
+
+    updateDocument(id, data);
 
     // redirect to home page
-    navigate("/");
+    navigate("/dashboard");
   };
 
   
   return (
-    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} className='editpost'>
-        <h2>Criar post</h2>
-        <p>Escreva sobre oque quiser e compartilhe o seu conhecimento!</p>
+    <motion.div initial={{opacity: 0}} animate={{opacity: 1}} className='EditPost'>
+
+    {post && (
+
+        <>
+        <h2>Editando post: {post.title}</h2>
+        <p>Altere os dados do post como desejar!</p>
 
         <form onSubmit={handleSubmit}>
         <label>
@@ -82,7 +108,8 @@ const CreatePost = () => {
             value={image}
           />
         </label>
-        <img src={image} alt="" className='prev-image'/>
+        <p className='preview-title'>Preview da imagem atual</p>
+            <img src={post.image} alt={post.title} />
         <label>
           <span>Conteúdo:</span>
           <textarea
@@ -104,7 +131,7 @@ const CreatePost = () => {
             value={tags}
           />
         </label>
-        {!response.loading && <button className="btn">Criar post!</button>}
+        {!response.loading && <button className="btn">Salvar post</button>}
         {response.loading && (
           <button className="btn" disabled>
             Aguarde.. .
@@ -114,9 +141,12 @@ const CreatePost = () => {
           <p className="error">{response.error || formError}</p>
         )}
       </form>
+        </>
+
+    )}
 
     </motion.div>
   )
 }
 
-export default CreatePost
+export default EditPost

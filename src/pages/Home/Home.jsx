@@ -21,10 +21,13 @@ const Home = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
+      if(query === '#') {
+        return Navigate('/')
+      }
+
     if(query) {
       return Navigate(`/search?q=${query}`)
     }
-
   }
 
   return (
@@ -37,9 +40,10 @@ const Home = () => {
       </form>
 
     <motion.div className='posts' initial={{y: 300}} animate={{y: 0}}>
+      {query === '#' && <p className='rachTag'> '#' Não e valido como pesquisa</p> }
       {loading && <p>carregando...</p> }
       {posts && posts.map((post) => (
-      
+    
         <PostDetail key={post.id} post={post}/>
 
       ))}

@@ -5,6 +5,7 @@ import { useFetchDocuments } from '../../Hooks/UsefetchDocuments'
 import { useQuery } from '../../Hooks/useQuery'
 import PostDetail from '../../components/PostDetail'
 import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
 const Search = () => {
 
@@ -13,12 +14,13 @@ const Search = () => {
 
   const { documents: posts } = useFetchDocuments("posts", search);
 
-    console.log(posts)
-
     return (
-    <div className='search-container'>
-        
+    <motion.div className='search-container' initial={{opacity: 0}} animate={{opacity: 1}}>
+
         <div> 
+
+        {posts && <h2>{posts.length} resultado(s) encontrados</h2> }
+
             {posts && posts.length === 0 && (
                 <>
                     <p>Nâo forão encontrados posts a partir da sua busca...</p>
@@ -27,11 +29,16 @@ const Search = () => {
             )}
             {posts && posts.map((posts) => (
 
-                <PostDetail post={posts} key={posts.id}/>
+                <figure>
+                  <PostDetail post={posts} key={posts.id}/>  
+                </figure>
                 
             ))}
+
+              <Link to='/' className='btn btn-dark'>Buscar outro post</Link>
+
         </div>
-    </div>
+    </motion.div>
   )
 }
 
