@@ -19,7 +19,7 @@ const Search = () => {
 
         <div> 
 
-        {posts && <h2>{posts.length} resultado(s) encontrados</h2> }
+        {posts && <h2 className='results'>{posts.length} resultado(s) encontrados</h2> }
 
             {posts && posts.length === 0 && (
                 <>
@@ -34,8 +34,6 @@ const Search = () => {
                 </figure>
                 
             ))}
-
-              <Link to='/' className='btn btn-dark'>Buscar outro post</Link>
 
         </div>
     </motion.div>

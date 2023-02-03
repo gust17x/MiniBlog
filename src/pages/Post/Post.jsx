@@ -15,19 +15,13 @@ const Post = () => {
       {post && (
        <div className='post'>
         <figure className='perfil'>
-
-        <nav className='perfil-img'>
-          <img src={post.image} alt="img perfil user" />
-        </nav>
-
-        <h2>{post.createdBy}</h2>
-
         </figure>
 
         <figure className='post-info'>
         <img src={post.image} alt="" />
           <h2>{post.title}</h2>
           <p>{post.body}</p>
+          <p key={post.tags}> <span>#</span> {post.tags}</p>
         </figure>
 
        </div>

@@ -32,10 +32,9 @@ const Home = () => {
 
   return (
     <motion.div initial={{opacity: 0}} animate={{opacity: 1}} className='home'>
-      <h4>Postagens mais recentes</h4>
 
       <form onSubmit={handleSubmit} className='search-form'>
-        <input type="text" placeholder='Ou busque por tags...' onChange={(e) => setQuery(e.target.value)}/>
+        <input type="text" placeholder='Busque por tags...' onChange={(e) => setQuery(e.target.value)}/>
         <button className='btn btn-dark'>Pesquisar</button>
       </form>
 
@@ -46,11 +45,12 @@ const Home = () => {
     
         <PostDetail key={post.id} post={post}/>
 
+
       ))}
       {posts && posts.length === 0 && (
         <div className='no-posts'>
           <p>Não foram encontrado posts</p>
-          <Link to='/posts/create' className='btn'>Seja o primeiro a postar</Link>
+          <Link to='/createpost' className='btn'>Seja o primeiro a postar</Link>
         </div>
       )}
     </motion.div>

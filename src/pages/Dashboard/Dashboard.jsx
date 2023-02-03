@@ -32,21 +32,21 @@ const Dashboard = () => {
       {posts && posts.length === 0 ? (
         <div className="noposts">
           <p>Não foram encontrados posts</p>
-          <Link to="/posts/create" className="btn">
+          <Link to="/createpost" className="btn">
             Criar primeiro post
           </Link>
         </div>
       ) : (
-        <div className="post_header">
-          <span>Título</span>
-          <span>Ações</span>
-        </div>
+        <></>
       )}
 
       {posts &&
         posts.map((post) => (
           <div className="post_row" key={post.id}>
             <p>{post.title}</p>
+
+          <img src={post.image} alt="" />
+
             <div className="actions">
               <Link to={`/posts/${post.id}`} className="btn btn-outline">
                 Ver
